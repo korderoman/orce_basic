@@ -14,7 +14,7 @@ if __name__=="__main__":
             codigo=input("Ingrese el código del curso")
             resultados=buscar.buscar_curso(codigo)
             for resultado in resultados:
-                print(resultado)
+                print("curso:"+ resultado[0]+" código: "+resultado[1]+" créditos: "+str(resultado[2]))
 
         elif eleccion=="b":
             print("Haz elegido la b")
