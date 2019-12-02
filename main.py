@@ -1,13 +1,87 @@
 from buscador import *
+from redactor import *
+from controlador import *
 
 if __name__=="__main__":
     usar=True
     buscar=Buscador()
+    redactor=Redactor()    
     while usar:
-        print()
-        print()
-        print("Bienvenidos al Sistema de Información \n Elija una opción:\n a) Buscar Curso por Código\n b)Buscar alumno por código\n c)Salir")
-        buscar.conectar()
+        print("Bienvenidos al Sistema de Matrícula \n Ingrese su código de estudiante\n Salir del Sistema - presione la tecla x \n")
+        codigo=input()
+        if(codigo=="x"):
+            print("Saliendo del Sistema de Matrícula")
+            usar=False
+        else:
+            alumno=buscar.buscar_alumno(codigo)
+            if alumno:
+                redactor.redactar_alumno(alumno)
+                usar2=True
+                while usar2:
+                    print("Tiene las siguientes opciones")
+                    print("A) Notas  \n B) Matrícula \n C) Salir de las opciones")
+                    opcion=input()
+                    if opcion=="c" or opcion=="C":
+                        print("Saliendo de las opciones")
+                        usar2=False
+                    elif opcion=="a" or opcion=="A":
+                        notas=buscar.buscar_notas(codigo)
+                        redactor.redactar_notas(notas)
+                    elif opcion=="b" or opcion=="B":
+                        matriculado=buscar.get_matriculado(codigo)
+                        if matriculado[0][0]=="NO":                        
+                            matricula=[] # se crea una lista que almacenará la matricula
+                            cursos=buscar.buscar_cursos_disponible(codigo)
+                            redactor.redactar_cursos_disponibles(cursos)
+                            usar3=True
+                            controlador=Controlador(cursos)
+                            while usar3:
+                                opcion=input("Indique el curso que desea matricularse en función de la opción o presione z si desea finalizar la matricula ")
+                                if opcion=="z":
+                                    usar3=False
+                                    #imprimimos la matricula
+                                    redactor.redactar_matricula(matricula)
+                                    buscar.set_matriculado(codigo)
+                                else:
+                                    opcion=int(opcion)
+                                    if opcion<len(cursos):
+                                        matricular=controlador.evaluar_menor_ciclo(opcion,matricula)
+                                        if matricular:
+                                            if cursos[opcion] in matricula:
+                                                print("ya está matriculado")
+                                            else:
+                                                print("Matriculando")
+                                                matricula.append(cursos[opcion])
+                                        else:
+                                            print("Debe elegir primero un curso de menor ciclo")
+                                    else:
+                                        print("No ha elegido una opción válida")
+                        else:
+                                print("Usted ya se encuentra matriculado")
+                    else:
+                        print("Opción incorrecta")
+            else:
+                print("Alumno no encontrado, escriba un código correcto")
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        """
+        print("Bienvenidos al Sistema de Información \n Elija una opción:\n a) Notas\n b)Matrícula\n c)Salir")
+        
         eleccion=input()
         if eleccion=="c":
             print("Saliendo del sistema")
@@ -44,3 +118,4 @@ if __name__=="__main__":
             
         else:
             print("Haz elegido una opción no válida, vuelva a intentarlo")
+        """
