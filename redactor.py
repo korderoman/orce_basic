@@ -2,26 +2,55 @@
 from prettytable import PrettyTable
 class Redactor:
     def __init__(self):
-        self.tabla_cursos_disponibles=PrettyTable(["Opción","Código de Curso","Ciclo","Nota","Condición"])
-        self.tabla_notas=PrettyTable(["Curso","Nota","Condición"])
-        self.tabla_matricula=PrettyTable(["Curso","Créditos"])
-    def redactar_alumno(self,alumnos):
-        for alumno in alumnos:
-            print("Alumno: "+alumno[2]+" "+alumno[3]+" "+alumno[0]+" "+alumno[1]+"\n Código: "+alumno[4]+"\n Especialidad: "+alumno[5]+"\n")
+        self.tabla_proyectos_descripcion=PrettyTable(["Nombre del Proyecto","Curso","Ciclo","Integrante 1","Integrante 2", "Integrante 3"])
+        self.tabla_jurados=PrettyTable(["Nombre","Especialidad","Código"])
+        self.tabla_calificaciones=PrettyTable(["Nombre","J1-Proyecto","J1-Exposición","J1-Ambiental","J1-Paper","J1-Promedio","J2-Proyecto","J2-Exposición","J2-Ambiental","J2-Paper","J2-Promedio"])
+        self.tabla_A=PrettyTable()
+        self.tabla_B=PrettyTable()
+        self.tabla_C=PrettyTable()
+        self.tabla_primeros_A=PrettyTable(["Nombre","Total"])
+        self.tabla_primeros_B=PrettyTable(["Nombre","Total"])
+        self.tabla_primeros_C=PrettyTable(["Nombre","Total"])
+        self.tabla_proyecto_juez=PrettyTable(["Juez","Proyecto"])
+        #a partir de aqui
+    def redactar_proyectos_descripcion(self,descripcion):
+        for proyecto in descripcion:
+            self.tabla_proyectos_descripcion.add_row([proyecto[0],proyecto[1],proyecto[2],proyecto[3],proyecto[4],proyecto[5]])
+        print(self.tabla_proyectos_descripcion)
     
-    def redactar_notas(self,notas):
-        for nota in notas:
-            self.tabla_notas.add_row([nota[1],str(nota[3]),nota[4]])
-        print(self.tabla_notas)
+    def redactar_jurados(self,jurados):
+        for jurado in jurados:
+            self.tabla_jurados.add_row([jurado[0],jurado[1],jurado[2]])
+        print(self.tabla_jurados)
+    
+    def redactar_proyectos_calificados(self,calificaciones):
+        for proyecto in calificaciones:
+            self.tabla_calificaciones.add_row([proyecto[0],proyecto[1],proyecto[2],proyecto[3],proyecto[4],proyecto[5],proyecto[6],proyecto[7],proyecto[8],proyecto[9],proyecto[10]])
+        print(self.tabla_calificaciones)
 
-    def redactar_cursos_disponibles(self,cursos):
-        print("Cursos Disponibles")
-        for i in range(len(cursos)):
-            self.tabla_cursos_disponibles.add_row([ str(i),cursos[i][1],str(cursos[i][2]),str(cursos[i][3]),cursos[i][4]])
-        print(self.tabla_cursos_disponibles)
+    def redactar_x_categoria(self,a,b,c):
+        self.tabla_A.add_column("Categoria A",a)
+        self.tabla_B.add_column("Categoria B",b)
+        self.tabla_C.add_column("Categoria C",c)
+        print(self.tabla_A)
+        print(self.tabla_B)
+        print(self.tabla_C)
     
-    def redactar_matricula(self,matricula):
-        print("Su ficha de Matrícula es:")
-        for curso in matricula:
-            self.tabla_matricula.add_row([curso[1],curso[3]])
-        print(self.tabla_matricula)
+    def redactar_primeros_puestos(self,a,b,c):
+        arreglos=[a,b,c]
+        tablas=[self.tabla_primeros_A,self.tabla_primeros_B,self.tabla_primeros_C]
+        titulos=["Categoría A","Categoría B","Categoría C"]
+        for i in range(len(arreglos)):
+            for proyecto in arreglos[i]:
+                tablas[i].add_row([proyecto[0],float(proyecto[23])])
+                #print(proyecto[0],proyecto[23])
+            tablas[i].sortby="Total" #ordenamos
+            tablas[i].reversesort=True #invertimos el orden
+            print(tablas[i].get_string(start=0, end=3,title=titulos[i]))
+
+    def redactar_proyecto_x_jurado(self,jueces):
+        for juez in jueces:
+            self.tabla_proyecto_juez.add_row([juez[1],juez[0]])
+        self.tabla_proyecto_juez.sortby="Juez"
+        print(self.tabla_proyecto_juez)
+        
